@@ -4,6 +4,9 @@ const User = require("../models/User")
 const { promisify } = require("util")
 const router = express.Router()
 
+router.get("/login", (req, res) => {
+  res.render("auth/login")
+})
 router.post(
   "/login",
   passport.authenticate("local", {
@@ -21,17 +24,22 @@ router.post("/register", async (req, res) => {
   try {
     const user = await new User(req.body)
     await user.save()
-
     try {
-      await req.login(user)
+      await req.login(user, function (err) {
+        if (err) {
+          return next(err)
+        }
+        return res.redirect("/")
+      })
     } catch (error) {
       throw error
     }
 
-    req.flash("success_msg", "Login success")
-    return res.redirect("/")
+    // req.flash("success_msg", "Login success")
+    // return res.redirect("/")
   } catch (error) {
     console.log(error)
+    throw error
   }
 })
 module.exports = router
