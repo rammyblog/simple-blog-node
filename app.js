@@ -69,6 +69,8 @@ app.use(passport.session())
 
 // Routes
 app.use("/", require("./routes/index"))
+app.use("/comment", require("./routes/comments"))
+
 app.use("/auth", require("./routes/auth"))
 
 app.listen(port, () => console.log(`Port is running on ${port}`))

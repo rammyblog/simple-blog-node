@@ -2,6 +2,7 @@ const express = require("express")
 const router = express.Router()
 const { ensureAuth } = require("../middleware/auth")
 const Post = require("../models/Post")
+const Comment = require("../models/Comment")
 
 router.get("/", (req, res) => {
   res.redirect("/home")
@@ -42,17 +43,19 @@ router.post("/post/add", ensureAuth, async (req, res) => {
 
 // GET single post
 router.get("/post/:id/", ensureAuth, async (req, res) => {
-  console.log(req.params)
   try {
     const post = await Post.findById({ _id: req.params.id })
       .populate("author")
+      .lean()
+    const comments = await Comment.find({ post: req.params.id })
+      .populate("user")
       .lean()
 
     if (!post) {
       console.log("no post")
     }
 
-    res.render("posts/singlePost", { post })
+    res.render("posts/singlePost", { post, comments })
   } catch (error) {
     console.error(error)
   }

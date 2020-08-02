@@ -1,6 +1,5 @@
 const mongoose = require("mongoose")
 const { Schema } = mongoose
-const User = require("./User")
 
 const PostSchema = new Schema(
   {
