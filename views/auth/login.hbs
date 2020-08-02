@@ -1,13 +1,28 @@
-<form action="/auth/login" method="post">
-    <div>
-        <label>Username:</label>
-        <input type="text" name="username" />
+<div class="container">
+    <div class="d-flex align-items-center min-vh-100 flex-column g justify-content-center">
+        <h1 class="text-center logo my-4">
+            <a href="/">BloggersBlog</a>
+        </h1>
+        <div class="col-lg-6 col-md-6 col-sm-12">
+            <div class="card">
+                <div class="card-body">
+                    <h3 class="card-title">Login </h3>
+                    <form action="/auth/login" method="post">
+
+                        <div class="form-group">
+                            <label for="username">Username</label>
+                            <input type="text" name='username' class="form-control" id="username"
+                                aria-describedby="emailHelp">
+                        </div>
+                        <div class="form-group">
+                            <label for="password">Password</label>
+                            <input type="password" name="password" class="form-control" id="password">
+                        </div>
+                        <button type="submit" class="btn btn-primary">Login</button>
+                    </form>
+
+                </div>
+            </div>
+        </div>
     </div>
-    <div>
-        <label>Password:</label>
-        <input type="password" name="password" />
-    </div>
-    <div>
-        <input type="submit" value="Log In" />
-    </div>
-</form>
+</div>

@@ -1,0 +1,29 @@
+<h2>Add new post</h2>
+
+<form action="/post/add" method="POST">
+    <div class="form-group">
+        <label for="title">Title</label>
+        <input required type="text" name='title' class="form-control" id="title" placeholder="Bed of roses..">
+    </div>
+    <div class="form-group">
+        <label for="status">Status</label>
+        <select required class="form-control" name='status' id="status">
+            <option value="public">Public</option>
+            <option value="private">Private</option>
+        </select>
+    </div>
+    <div class="form-group">
+        <label required for="editor">Content</label>
+        <textarea id='editor' name='content' class="form-control" id="editor" rows="5"></textarea>
+    </div>
+    <button class="btn btn-primary" type="submit">Submit</button>
+</form>
+
+
+<script>
+    ClassicEditor
+        .create(document.querySelector('#editor'))
+        .catch(error => {
+            console.error(error);
+        });
+</script>

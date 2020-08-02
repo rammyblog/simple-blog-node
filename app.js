@@ -6,6 +6,7 @@ const MongoStore = require("connect-mongo")(session)
 const connectDB = require("./config/db")
 const passport = require("passport")
 const mongoose = require("mongoose")
+const path = require("path")
 
 const app = express()
 
@@ -34,6 +35,10 @@ app.engine(
   })
 )
 app.set("view engine", ".hbs")
+
+// Static folder
+
+app.use(express.static(path.join(__dirname, "public")))
 
 // Sessions
 app.use(
