@@ -42,4 +42,13 @@ router.post("/register", async (req, res) => {
     throw error
   }
 })
+
+router.get("/logout", async (req, res) => {
+  try {
+    req.logOut()
+    res.redirect("/")
+  } catch (error) {
+    console.log(error)
+  }
+})
 module.exports = router

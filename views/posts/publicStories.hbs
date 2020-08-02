@@ -11,7 +11,9 @@
 {{# each posts}}
 <div class="card mb-4">
     <div class="card-body">
+        {{#if ../user}}
         {{{editIcon author ../user _id}}}
+        {{/ if}}
 
         <h2 class="card-title">{{title}}</h2>
         <!-- Example split danger button -->
@@ -21,7 +23,7 @@
     </div>
     <div class="card-footer text-muted">
         Posted on {{formatDate created_at 'MMMM Do YYYY, h:mm:ss a'}} by
-        <a href="#">{{author.username}}</a>
+        <a href="/posts/{{author.id}}">{{author.username}}</a>
     </div>
 </div>
 
@@ -32,11 +34,10 @@
 {{/ each}}
 
 <!-- Pagination -->
-<ul class="pagination justify-content-center mb-4">
-    <li class="page-item">
-        <a class="page-link" href="#">&larr; Older</a>
-    </li>
-    <li class="page-item disabled">
-        <a class="page-link" href="#">Newer &rarr;</a>
-    </li>
-</ul>
+{{!-- <nav aria-label="Page navigation example">
+    <ul class="pagination">
+        <li class="page-item"><a class="page-link" href="#">2</a></li>
+        <li class="page-item"><a class="page-link" href="#">3</a></li>
+        <li class="page-item"><a class="page-link" href="#">Next</a></li>
+    </ul>
+</nav> --}}

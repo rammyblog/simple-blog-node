@@ -44,12 +44,23 @@ const {
   truncate,
   editIcon,
   select,
+  checkCurrentGreaterOne,
+  parseInt,
 } = require("./helpers/hbs")
+const User = require("./models/User")
 // Handlebars
 app.engine(
   ".hbs",
   exphbs({
-    helpers: { formatDate, stripTags, truncate, editIcon, select },
+    helpers: {
+      formatDate,
+      checkCurrentGreaterOne,
+      parseInt,
+      stripTags,
+      truncate,
+      editIcon,
+      select,
+    },
     defaultLayout: "main",
     extname: ".hbs",
   })
@@ -76,8 +87,9 @@ app.use(passport.initialize())
 app.use(passport.session())
 
 // Set global var
-app.use(function (req, res, next) {
-  res.locals.user = req.user || null
+app.use(async function (req, res, next) {
+  const user = await User.findById({ _id: req.user.id }).lean()
+  res.locals.user = user || null
   next()
 })
 

@@ -8,20 +8,29 @@
         </button>
         <div class="collapse navbar-collapse" id="navbarResponsive">
             <ul class="navbar-nav ml-auto">
+                {{# if user}}
+
                 <li class="nav-item active">
                     <a class="nav-link" href="#">Home
                         <span class="sr-only">(current)</span>
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#">About</a>
+                    <a class="nav-link" href="posts/user/{{user.username}}/{{user._id}}">Your posts</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#">Services</a>
+                    <a class="nav-link" href="/auth/logout/">Log out</a>
+                </li>
+
+                {{else}}
+                <li class="nav-item">
+                    <a class="btn btn-outline-info nav-link mr-2" href="/auth/login">Log in</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#">Contact</a>
+                    <a class="btn btn-info nav-link" href="/auth/register">Sign up</a>
                 </li>
+                {{/ if}}
+
             </ul>
         </div>
     </div>

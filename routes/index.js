@@ -104,4 +104,77 @@ router.put("/post/edit/:id/", ensureAuth, async (req, res) => {
   }
 })
 
+// DELETE post id
+router.delete("/post/delete/:id/", ensureAuth, async (req, res) => {
+  try {
+    await Post.findOneAndDelete({ _id: req.params.id })
+    res.redirect("/home")
+
+    // if (post.author != req.user.id) {
+    //   res.redirect("/home")
+    // } else {
+    //   res.redirect("/home")
+    // }
+  } catch (error) {
+    console.error(error)
+  }
+})
+
+// Get logged in user posts
+router.get("/posts/user/:username/:id", ensureAuth, async (req, res) => {
+  try {
+    const posts = await Post.find({ author: req.params.id })
+      .populate("author")
+      .sort({ createdAt: "desc" })
+      .lean()
+
+    if (!posts) {
+      console.log("no posts")
+    }
+
+    if (req.user.id != req.params.id) {
+      res.redirect("/")
+    } else {
+      res.render("posts/publicStories", { posts })
+    }
+  } catch (error) {
+    console.error(error)
+  }
+})
+
+// Get logged in user posts
+router.get("/posts/user/:id", ensureAuth, async (req, res) => {
+  try {
+    const posts = await Post.find({ author: req.params.id, status: "public" })
+      .populate("author")
+      .sort({ createdAt: "desc" })
+      .lean()
+
+    if (!posts) {
+      console.log("no posts")
+    }
+    res.render("posts/publicStories", { posts })
+  } catch (error) {
+    console.error(error)
+  }
+})
+
+// Get searched post
+router.get("/posts/search/", ensureAuth, async (req, res) => {
+  try {
+    if (req.query.q) {
+      const posts = await Post.find({ $text: { $search: req.query.q } })
+        .populate("author")
+        .sort({ createdAt: "desc" })
+        .lean()
+      if (!posts) {
+        console.log("no posts")
+      }
+      res.render("posts/publicStories", { posts })
+    }
+  } catch (error) {
+    console.error(error)
+  }
+})
+
 module.exports = router

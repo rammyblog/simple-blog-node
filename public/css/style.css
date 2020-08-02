@@ -5,3 +5,7 @@ body {
 .dropdown-menu {
   min-width: auto !important;
 }
+
+.nav-link {
+  color: #fff !important;
+}
