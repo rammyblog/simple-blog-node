@@ -18,13 +18,18 @@ module.exports = {
   stripTags: function (input) {
     return input.replace(/<(?:.|\n)*?>/gm, "")
   },
-  editIcon: function (storyUser, loggedUser, storyId, floating = true) {
-    if (storyUser._id.toString() == loggedUser._id.toString()) {
-      if (floating) {
-        return `<a href="/posts/edit/${storyId}" class="btn-floating halfway-fab blue"><i class="fas fa-edit fa-small"></i></a>`
-      } else {
-        return `<a href="/posts/edit/${storyId}"><i class="fas fa-edit"></i></a>`
-      }
+  editIcon: function (postAuthor, loggedUser, storyId) {
+    if (postAuthor._id.toString() == loggedUser._id.toString()) {
+      return `<div class="dropdown float-right">
+      <button class="btn btn-info btn-sm dropdown-toggle" type="button" id="dropdownMenuButton"
+          data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          Action
+      </button>
+      <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+          <a class="dropdown-item" href="/post/edit/${storyId}/">Edit</a>
+          <a class="dropdown-item" href="/post/edit/${storyId}/">Delete</a>
+      </div>
+  </div>`
     } else {
       return ""
     }

@@ -61,4 +61,47 @@ router.get("/post/:id/", ensureAuth, async (req, res) => {
   }
 })
 
+// GET edit post
+router.get("/post/edit/:id/", ensureAuth, async (req, res) => {
+  try {
+    const post = await Post.findOne({ _id: req.params.id }).lean()
+
+    if (!post) {
+      console.log("no post")
+    }
+
+    if (post.author != req.user.id) {
+      res.redirect("/home")
+    } else {
+      res.render("posts/editPost", { post })
+    }
+  } catch (error) {
+    console.error(error)
+  }
+})
+
+// PUT edit post
+router.put("/post/edit/:id/", ensureAuth, async (req, res) => {
+  try {
+    req.body.author = req.user.id
+    let post = await Post.findOne({ _id: req.params.id })
+
+    if (!post) {
+      console.log("no post")
+    }
+
+    if (post.author != req.user.id) {
+      res.redirect("/home")
+    } else {
+      post = await Post.findByIdAndUpdate({ _id: req.params.id }, req.body, {
+        new: true,
+        runValidators: true,
+      })
+      res.redirect("/home")
+    }
+  } catch (error) {
+    console.error(error)
+  }
+})
+
 module.exports = router

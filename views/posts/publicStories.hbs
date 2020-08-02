@@ -11,7 +11,11 @@
 {{# each posts}}
 <div class="card mb-4">
     <div class="card-body">
+        {{{editIcon author ../user _id}}}
+
         <h2 class="card-title">{{title}}</h2>
+        <!-- Example split danger button -->
+
         <p class="card-text">{{stripTags (truncate content 150)}}</p>
         <a href="/post/{{_id}}" class="btn btn-primary">Read More &rarr;</a>
     </div>
