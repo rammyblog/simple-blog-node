@@ -140,6 +140,7 @@ router.get("/posts/user/:username/:id", ensureAuth, async (req, res) => {
       res.render("posts/publicStories", {
         posts,
         title: `${req.params.username} posts`,
+        userPosts: true,
       })
     }
   } catch (error) {
@@ -162,6 +163,7 @@ router.get("/posts/user/:id", ensureAuth, async (req, res) => {
     res.render("posts/publicStories", {
       posts,
       title: `${user.username} Posts`,
+      userPosts: true,
     })
   } catch (error) {
     console.error(error)

@@ -2,9 +2,11 @@
 
 <!-- Blog Entries Column -->
 
-<h1 class="my-4">All blog posts
-    {{!-- <small>Secondary Text</small> --}}
-</h1>
+<h1 class="my-4"> {{#if userPosts}}
+    user.username
+    {{else}}
+    All
+    {{/if}} blog posts</h1>
 
 
 <!-- Blog Post -->
