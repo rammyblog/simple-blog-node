@@ -88,8 +88,14 @@ app.use(passport.session())
 
 // Set global var
 app.use(async function (req, res, next) {
-  const user = await User.findById({ _id: req.user.id }).lean()
-  res.locals.user = user || null
+  if (req.user) {
+    try {
+      const user = await User.findById({ _id: req.user.id }).lean()
+      res.locals.user = user
+    } catch (error) {
+      req.locals.user = null
+    }
+  }
   next()
 })
 

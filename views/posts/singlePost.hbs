@@ -1,9 +1,16 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>{{post.title}}</title>
+</head>
+
 <h1 class="mt-4">{{post.title}}</h1>
 
 <!-- Author -->
 <p class="lead">
   by
-  <a href="#">{{post.author.username}}</a>
+  <a href="/posts/user/{{post.author._id}}">{{post.author.username}}</a>
 </p>
 
 <hr>
@@ -43,3 +50,5 @@
 {{else}}
 <p>No comments</p>
 {{/each}}
+
+</html>

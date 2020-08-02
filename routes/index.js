@@ -3,6 +3,7 @@ const router = express.Router()
 const { ensureAuth } = require("../middleware/auth")
 const Post = require("../models/Post")
 const Comment = require("../models/Comment")
+const User = require("../models/User")
 
 router.get("/", (req, res) => {
   res.redirect("/home")
@@ -14,10 +15,10 @@ router.get("/home", async (req, res) => {
   try {
     const posts = await Post.find({ status: "public" })
       .populate("author")
-      .sort({ createdAt: "desc" })
+      .sort({ updated_at: "desc" })
       .lean()
-
-    res.render("posts/publicStories", { posts })
+    console.log(posts)
+    res.render("posts/publicStories", { posts, title: "Bloggers Blog Home" })
   } catch (error) {
     console.error(error)
   }
@@ -26,7 +27,7 @@ router.get("/home", async (req, res) => {
 // @route post/add
 // GET the form
 router.get("/post/add", ensureAuth, (req, res) =>
-  res.render("posts/addPost.hbs")
+  res.render("posts/addPost.hbs", { title: "Add new post" })
 )
 
 // @route post/add
@@ -49,13 +50,14 @@ router.get("/post/:id/", ensureAuth, async (req, res) => {
       .lean()
     const comments = await Comment.find({ post: req.params.id })
       .populate("user")
+      .sort({ updated_at: "desc" })
       .lean()
 
     if (!post) {
       console.log("no post")
     }
 
-    res.render("posts/singlePost", { post, comments })
+    res.render("posts/singlePost", { post, comments, title: post.title })
   } catch (error) {
     console.error(error)
   }
@@ -73,7 +75,7 @@ router.get("/post/edit/:id/", ensureAuth, async (req, res) => {
     if (post.author != req.user.id) {
       res.redirect("/home")
     } else {
-      res.render("posts/editPost", { post })
+      res.render("posts/editPost", { post, title: `Edit ${post.title}` })
     }
   } catch (error) {
     console.error(error)
@@ -125,7 +127,7 @@ router.get("/posts/user/:username/:id", ensureAuth, async (req, res) => {
   try {
     const posts = await Post.find({ author: req.params.id })
       .populate("author")
-      .sort({ createdAt: "desc" })
+      .sort({ updated_at: "desc" })
       .lean()
 
     if (!posts) {
@@ -135,7 +137,10 @@ router.get("/posts/user/:username/:id", ensureAuth, async (req, res) => {
     if (req.user.id != req.params.id) {
       res.redirect("/")
     } else {
-      res.render("posts/publicStories", { posts })
+      res.render("posts/publicStories", {
+        posts,
+        title: `${req.params.username} posts`,
+      })
     }
   } catch (error) {
     console.error(error)
@@ -147,13 +152,17 @@ router.get("/posts/user/:id", ensureAuth, async (req, res) => {
   try {
     const posts = await Post.find({ author: req.params.id, status: "public" })
       .populate("author")
-      .sort({ createdAt: "desc" })
+      .sort({ updated_at: "desc" })
       .lean()
+    const user = await User.findById({ _id: req.params.id })
 
     if (!posts) {
       console.log("no posts")
     }
-    res.render("posts/publicStories", { posts })
+    res.render("posts/publicStories", {
+      posts,
+      title: `${user.username} Posts`,
+    })
   } catch (error) {
     console.error(error)
   }
@@ -163,14 +172,20 @@ router.get("/posts/user/:id", ensureAuth, async (req, res) => {
 router.get("/posts/search/", ensureAuth, async (req, res) => {
   try {
     if (req.query.q) {
-      const posts = await Post.find({ $text: { $search: req.query.q } })
+      const posts = await Post.find({
+        $text: { $search: req.query.q },
+        status: "public",
+      })
         .populate("author")
-        .sort({ createdAt: "desc" })
+        .sort({ updated_at: "desc" })
         .lean()
       if (!posts) {
         console.log("no posts")
       }
-      res.render("posts/publicStories", { posts })
+      res.render("posts/publicStories", {
+        posts,
+        title: `Search results for ${req.query.q}`,
+      })
     }
   } catch (error) {
     console.error(error)
