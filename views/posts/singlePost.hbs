@@ -12,7 +12,10 @@
   by
   <a href="/posts/user/{{post.author._id}}">{{post.author.username}}</a>
 </p>
+{{#if user}}
+
 {{{editIcon post.author user post._id}}}
+{{/if}}
 
 <hr>
 
@@ -29,6 +32,10 @@
 <!-- Comments Form -->
 <div class="card my-4">
   <h5 class="card-header">Leave a Comment:</h5>
+  {{#if user}}
+
+
+
   <div class="card-body">
     <form action="/comment/add/{{post._id}}" method="POST">
       <div class="form-group">
@@ -37,6 +44,23 @@
       <button type="submit" class="btn btn-primary">Submit</button>
     </form>
   </div>
+
+  {{else}}
+  <div class="p-2">
+
+    <p>
+
+      You must be Logged in to Leave a Comment
+    </p>
+    <p>
+      <a href="/auth/login">Log in</a> or <a href="/auth/register">
+        SignUp</a> If you do not have an Account
+
+    </p>
+
+  </div>
+
+  {{/if}}
 </div>
 
 <!-- Single Comment -->

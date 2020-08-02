@@ -43,7 +43,7 @@ router.post("/post/add", ensureAuth, async (req, res) => {
 })
 
 // GET single post
-router.get("/post/:id/", ensureAuth, async (req, res) => {
+router.get("/post/:id/", async (req, res) => {
   try {
     const post = await Post.findById({ _id: req.params.id })
       .populate("author")
@@ -123,7 +123,7 @@ router.delete("/post/delete/:id/", ensureAuth, async (req, res) => {
 })
 
 // Get logged in user posts
-router.get("/posts/user/:username/:id", ensureAuth, async (req, res) => {
+router.get("/posts/user/:username/:id", async (req, res) => {
   try {
     const posts = await Post.find({ author: req.params.id })
       .populate("author")
@@ -149,7 +149,7 @@ router.get("/posts/user/:username/:id", ensureAuth, async (req, res) => {
 })
 
 // Get logged in user posts
-router.get("/posts/user/:id", ensureAuth, async (req, res) => {
+router.get("/posts/user/:id", async (req, res) => {
   try {
     const posts = await Post.find({ author: req.params.id, status: "public" })
       .populate("author")
@@ -171,7 +171,7 @@ router.get("/posts/user/:id", ensureAuth, async (req, res) => {
 })
 
 // Get searched post
-router.get("/posts/search/", ensureAuth, async (req, res) => {
+router.get("/posts/search/", async (req, res) => {
   try {
     if (req.query.q) {
       const posts = await Post.find({
