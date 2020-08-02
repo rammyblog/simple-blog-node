@@ -8,9 +8,12 @@ const passport = require("passport")
 const mongoose = require("mongoose")
 const path = require("path")
 const methodOverride = require("method-override")
+const dotenv = require("dotenv")
 
 const app = express()
 
+// Load config
+dotenv.config({ path: "./config/config.env" })
 // Body Parser
 app.use(express.urlencoded({ extended: false }))
 app.use(express.json())
